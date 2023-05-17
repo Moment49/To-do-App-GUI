@@ -5,6 +5,9 @@ import datetime
 import json 
 
 
+# Tasks database - file.txt
+filename = "Task_db.txt"
+
 # Holds all the tasks
 tasks_list = []
 
@@ -45,6 +48,15 @@ def add_check_task(task_list):
         toast_error.show_toast()
    
 def load_tasks(task_list):
+    # Load the contents from db if it exists
+    try:
+        with open(filename) as file_obj:
+            task_list = json.load(file_obj)
+    except FileNotFoundError:
+        """"Create the file if it doesnt exist"""
+        with open(filename, 'w') as file_obj:
+            json.dump(task_list, file_obj)
+    # Loop through the list and display the task in the table
     for i in range(len(task_list)):
         task = task_list[i][0]
         print(task)
@@ -69,11 +81,10 @@ def delete_task(task_list):
             print(task_list)
         
     
-
-
-def save_task():
-    pass
-
+def save_task(task_list):
+    # Saving to File
+    with open(filename, 'w') as file_obj:
+        json.dump(task_list, file_obj)
 
 # window
 window = ttk.Window(themename='superhero')
@@ -163,7 +174,7 @@ add_btn = ttk.Button(window, bootstyle='primary', width=8, text='Add', command=l
 add_btn.pack(pady=10, padx=10, side='left')
 delete_btn = ttk.Button(window, bootstyle='danger',width=8, text='Delete', command=lambda:[delete_task(tasks_list)])
 delete_btn.pack(pady=10, padx=10, side='left')
-save_btn = ttk.Button(window, bootstyle='primary',width=8, text='Save', command=add_check_task)
+save_btn = ttk.Button(window, bootstyle='primary',width=8, text='Save', command=lambda:[save_task(tasks_list)])
 save_btn.pack(pady=10, padx=10, side='left')
 load_btn = ttk.Button(window, bootstyle='primary',width=8,text='Load',command = lambda:[load_tasks(tasks_list)])
 load_btn.pack(pady=10, padx=10, side='left')
@@ -171,6 +182,8 @@ load_btn.pack(pady=10, padx=10, side='left')
 # Events
 task_entry.bind("<FocusIn>", focusIn_entry)
 task_entry.bind("<Return>", return_entry)
+
+
 
 
 # run
