@@ -20,7 +20,7 @@ def focusIn_entry(event):
     # Removes the Initial Value of the string
     task_entry.delete(0, tk.END)
 
-# Toast Notiification for Add Item
+# Toast Notiification for Validation
 toast_error = ToastNotification(
 title="Notification",
 message="Sorry!!! Enter a task",
@@ -79,12 +79,13 @@ def delete_task(task_list):
             # Remove item from the list
             task_list.remove(item_del)
             print(task_list)
-        
-    
+           
 def save_task(task_list):
     # Saving to File
     with open(filename, 'w') as file_obj:
         json.dump(task_list, file_obj)
+
+
 
 # window
 window = ttk.Window(themename='superhero')
